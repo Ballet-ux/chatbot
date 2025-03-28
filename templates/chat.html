@@ -64,9 +64,14 @@
 <body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
 
     <div class="chat-wrapper w-full bg-gray-800 shadow-2xl rounded-xl overflow-hidden">
-        <div class="bg-blue-800 text-white p-4 flex items-center">
-            <i class="fas fa-robot mr-3 text-2xl"></i>
-            <h1 class="text-xl font-bold">Medical Chatbot</h1>
+        <div class="bg-blue-800 text-white p-4 flex items-center relative">
+            <a href="/" id="go-home-link" class="absolute left-4 text-white hover:text-gray-200 transition duration-300" title="Go Home">
+                <i class="fas fa-home text-xl"></i>
+            </a>
+            <div class="flex items-center mx-auto">
+                <i class="fas fa-robot mr-3 text-2xl"></i>
+                <h1 class="text-xl font-bold">Medical Chatbot</h1>
+            </div>
         </div>
 
         <div id="chat-container" class="p-4 space-y-4 overflow-y-auto">
