@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAssist | AI Health Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-slide-in { animation: slideIn 0.8s ease-out forwards; }
+        .animate-fade { animation: fadeIn 1s ease-out forwards; }
+        .hover-lift { transition: transform 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-10px); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-blue-900 text-white min-h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-6 max-w-6xl">
+        <nav class="flex justify-between items-center mb-8">
+            <div class="flex items-center">
+                <i class="fas fa-notes-medical text-3xl text-blue-400 mr-3"></i>
+                <h1 class="text-2xl font-bold text-blue-300">MediAssist</h1>
+            </div>
+            <div>
+                <a href="/chat" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition">
+                    Chat Now
+                </a>
+            </div>
+        </nav>
+
+        <main>
+            <section class="grid md:grid-cols-2 gap-8 items-center mb-16">
+                <div class="animate-slide-in">
+                    <h2 class="text-4xl font-bold mb-4 text-blue-300">Your AI Health Companion</h2>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        MediAssist provides instant, reliable health information powered by advanced AI technology.
+                        Get personalized insights, quick medical advice, and supportive health guidance.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="/chat" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-full transition">
+                            Start Consultation
+                        </a>
+                        <a href="#features" class="border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white px-6 py-3 rounded-full transition">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="block text-center animate-fade">
+                    <img src="/static/bot2.png" alt="Medical AI Assistant" class="rounded-xl shadow-2xl hover-lift w-full max-w-md mx-auto">
+                </div>
+            </section>
+
+            <section id="features" class="mb-16">
+                <h3 class="text-3xl text-center mb-10 text-blue-300">Key Features</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg text-center hover-lift">
+                        <i class="fas fa-brain text-4xl text-blue-500 mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-3">Smart Analysis</h4>
+                        <p class="text-gray-400 text-sm">
+                            Advanced NLP understands complex health queries with precision.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg text-center hover-lift">
+                        <i class="fas fa-shield-alt text-4xl text-blue-500 mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-3">Secure & Private</h4>
+                        <p class="text-gray-400 text-sm">
+                            Robust privacy protocols protect your sensitive health information.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg text-center hover-lift">
+                        <i class="fas fa-clock text-4xl text-blue-500 mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-3">24/7 Support</h4>
+                        <p class="text-gray-400 text-sm">
+                            Instant responses whenever you need medical guidance.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-10 text-blue-300">Tech Stack</h2>
+                <div class="flex justify-center space-x-6 md:space-x-12 text-gray-300">
+                    <div class="flex flex-col items-center hover-lift">
+                        <i class="fab fa-python text-4xl md:text-5xl mb-2"></i>
+                        <span class="text-sm md:text-base">Python</span>
+                    </div>
+                    <div class="flex flex-col items-center hover-lift">
+                        <i class="fas fa-server text-4xl md:text-5xl mb-2"></i>
+                        <span class="text-sm md:text-base">Flask</span>
+                    </div>
+                    <div class="flex flex-col items-center hover-lift">
+                        <i class="fas fa-brain text-4xl md:text-5xl mb-2"></i>
+                        <span class="text-sm md:text-base">AI Model</span>
+                    </div>
+                    <div class="flex flex-col items-center hover-lift">
+                        <i class="fab fa-html5 text-4xl md:text-5xl mb-2"></i>
+                        <span class="text-sm md:text-base">HTML/CSS</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-gray-800 rounded-lg p-8 mb-16">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-4 text-blue-300">How It Works</h3>
+                        <ol class="space-y-4 text-gray-300">
+                            <li class="flex items-center">
+                                <span class="mr-4 text-blue-500 font-bold text-2xl">1</span>
+                                Ask your health question naturally
+                            </li>
+                            <li class="flex items-center">
+                                <span class="mr-4 text-blue-500 font-bold text-2xl">2</span>
+                                AI processes and understands your query
+                            </li>
+                            <li class="flex items-center">
+                                <span class="mr-4 text-blue-500 font-bold text-2xl">3</span>
+                                Receive precise, helpful health insights
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="hidden md:block">
+                        <img src="/static/bot1.png" alt="Chatbot Workflow" class="rounded-lg shadow-xl hover-lift">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center py-8 border-t border-gray-700">
+            <p class="text-gray-500 mb-4 text-sm">
+                Disclaimer: MediAssist provides informational support and is not a substitute for professional medical advice.
+            </p>
+
+        </footer>
+    </div>
+
+    <script>
+        // Advanced scroll-triggered animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-slide-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll functionality
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

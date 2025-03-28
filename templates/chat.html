@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        #chat-container {
+            max-height: 70vh;
+            min-height: 50vh;
+            overflow-y-auto;
+            scroll-behavior: smooth;
+        }
+        #chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chat-container::-webkit-scrollbar-track {
+            background: #333;
+        }
+        #chat-container::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
+        #chat-container::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+        .message-transition {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInMessage 0.3s forwards;
+        }
+        @keyframes fadeInMessage {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .loading-dots::after {
+            content: '...';
+            animation: loadingDots 1.4s infinite;
+        }
+        @keyframes loadingDots {
+            0%, 20% { content: '.'; }
+            33% { content: '..'; }
+            66% { content: '...'; }
+        }
+        @media (min-width: 768px) {
+            .chat-wrapper {
+                max-width: 600px;
+                width: 90%;
+            }
+        }
+        @media (max-width: 767px) {
+            .chat-wrapper {
+                width: 95%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+
+    <div class="chat-wrapper w-full bg-gray-800 shadow-2xl rounded-xl overflow-hidden">
+        <div class="bg-blue-800 text-white p-4 flex items-center">
+            <i class="fas fa-robot mr-3 text-2xl"></i>
+            <h1 class="text-xl font-bold">Medical Chatbot</h1>
+        </div>
+
+        <div id="chat-container" class="p-4 space-y-4 overflow-y-auto">
+            <div class="flex items-start mb-4 message-transition">
+                <img src="/static/bot-avatar.png" alt="Bot" class="w-10 h-10 rounded-full mr-3">
+                <div class="bg-gray-700 text-gray-200 p-3 rounded-lg max-w-[80%]">
+                    <p>Hello! I'm your medical assistant. Ask me anything about health (Note: I can answer everything but am best with health related questions).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-700 p-4 bg-gray-850">
+            <div class="flex items-center">
+                <input
+                    type="text"
+                    id="message-input"
+                    placeholder="Type your health question..."
+                    class="flex-grow p-2 border border-gray-700 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                <button
+                    id="send-btn"
+                    class="bg-blue-800 text-white p-2 rounded-r-lg hover:bg-blue-700 transition duration-300"
+                >
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        function addMessage(message, type = 'user') {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('flex', 'items-start', 'mb-4', 'message-transition');
+
+            if (type === 'bot') {
+                messageDiv.innerHTML = `
+                    <img src="/static/bot-avatar.png" alt="Bot" class="w-10 h-10 rounded-full mr-3">
+                    <div class="bg-gray-700 text-gray-200 p-3 rounded-lg max-w-[80%]">
+                        <p>${message}</p>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="ml-auto bg-blue-800 text-white p-3 rounded-lg max-w-[80%] text-right">
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addLoadingIndicator() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading-indicator';
+            loadingDiv.classList.add('flex', 'items-start', 'mb-4', 'message-transition');
+            loadingDiv.innerHTML = `
+                <img src="/static/bot-avatar.png" alt="Bot" class="w-10 h-10 rounded-full mr-3">
+                <div class="bg-gray-700 text-gray-200 p-3 rounded-lg max-w-[80%]">
+                    <p class="loading-dots">Thinking</p>
+                </div>
+            `;
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeLoadingIndicator() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+        }
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === '') return;
+
+            addMessage(message);
+            messageInput.value = '';
+            sendBtn.disabled = true;
+            addLoadingIndicator();
+
+            fetch('/get_response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    session_id: sessionId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                removeLoadingIndicator();
+                addMessage(data.response, 'bot');
+                sendBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                removeLoadingIndicator();
+                addMessage('Sorry, there was an error processing your request.', 'bot');
+                sendBtn.disabled = false;
+            });
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
